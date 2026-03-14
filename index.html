@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paul Buquet — Full Stack Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080c10;
+      --bg2: #0d1117;
+      --bg3: #131920;
+      --accent: #00ffc3;
+      --accent2: #00b8ff;
+      --accent3: #ff4e6a;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --border: rgba(0,255,195,0.12);
+      --glow: 0 0 20px rgba(0,255,195,0.25);
+      --font-mono: 'Share Tech Mono', monospace;
+      --font-main: 'Outfit', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-main);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* NOISE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* GRID BACKGROUND */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,195,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,195,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: rgba(8,12,16,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    .nav-logo span { color: var(--muted); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* LANG TOGGLE */
+    .lang-toggle {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .lang-btn {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 0.3rem 0.7rem;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.1em;
+    }
+
+    .lang-btn.active {
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: bold;
+    }
+
+    /* SECTIONS */
+    section {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 7rem 2rem;
+    }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 10rem;
+      max-width: 1100px;
+    }
+
+    .hero-tag {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.2s;
+    }
+
+    .hero-tag::before {
+      content: '> ';
+      opacity: 0.5;
+    }
+
+    h1 {
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.4s;
+    }
+
+    h1 .accent { color: var(--accent); }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: var(--muted);
+      max-width: 560px;
+      margin: 1.5rem 0 3rem;
+      font-weight: 300;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.6s;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.8s;
+    }
+
+    .btn {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      padding: 0.8rem 2rem;
+      border-radius: 4px;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.2s;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 30px rgba(0,255,195,0.4);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+
+    .btn-outline:hover {
+      background: rgba(0,255,195,0.08);
+      transform: translateY(-2px);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 4rem;
+      margin-top: 6rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--border);
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 1s;
+    }
+
+    .stat-num {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 0.3rem;
+    }
+
+    /* SECTION HEADERS */
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .section-label::before { content: '// '; opacity: 0.5; }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 3rem;
+    }
+
+    h2 .accent { color: var(--accent); }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+      font-size: 1.05rem;
+    }
+
+    .about-text p strong { color: var(--text); font-weight: 600; }
+
+    .about-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+    }
+
+    .about-card-title {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 0.3rem 0.7rem;
+      background: rgba(0,255,195,0.07);
+      border: 1px solid rgba(0,255,195,0.2);
+      border-radius: 3px;
+      color: var(--accent);
+    }
+
+    .tag.blue {
+      background: rgba(0,184,255,0.07);
+      border-color: rgba(0,184,255,0.2);
+      color: var(--accent2);
+    }
+
+    .tag.red {
+      background: rgba(255,78,106,0.07);
+      border-color: rgba(255,78,106,0.2);
+      color: var(--accent3);
+    }
+
+    /* SERVICES */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .service-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+    }
+
+    .service-card:hover { border-color: rgba(0,255,195,0.3); transform: translateY(-4px); }
+    .service-card:hover::before { transform: scaleX(1); }
+
+    .service-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .service-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+    }
+
+    .service-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .project-card:first-child {
+      grid-column: span 2;
+    }
+
+    .project-card:hover { border-color: rgba(0,255,195,0.3); }
+
+    .project-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .project-company {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .project-year {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .project-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+    }
+
+    .project-desc {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .project-kpis {
+      display: flex;
+      gap: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .kpi-val {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .kpi-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* STACK */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1rem;
+    }
+
+    .stack-item {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.2rem;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .stack-item:hover {
+      border-color: rgba(0,255,195,0.3);
+      box-shadow: var(--glow);
+    }
+
+    .stack-name {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text);
+      margin-top: 0.5rem;
+    }
+
+    .stack-cat {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+
+    .stack-emoji { font-size: 1.5rem; }
+
+    /* CONTACT */
+    #contact {
+      text-align: center;
+    }
+
+    .contact-box {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4rem 5rem;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .contact-email {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin: 2rem 0;
+      word-break: break-all;
+    }
+
+    .contact-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    /* FOOTER */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    /* CURSOR LINE */
+    .cursor-blink {
+      display: inline-block;
+      width: 3px;
+      height: 0.85em;
+      background: var(--accent);
+      margin-left: 4px;
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 5rem 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-card:first-child { grid-column: span 1; }
+      .hero-stats { gap: 2rem; flex-wrap: wrap; }
+      .contact-box { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">paul<span>.</span>buquet</div>
+  <ul class="nav-links">
+    <li><a href="#about" data-en="about" data-fr="à propos">about</a></li>
+    <li><a href="#services" data-en="services" data-fr="services">services</a></li>
+    <li><a href="#projects" data-en="projects" data-fr="projets">projects</a></li>
+    <li><a href="#stack" data-en="stack" data-fr="stack">stack</a></li>
+    <li><a href="#contact" data-en="contact" data-fr="contact">contact</a></li>
+  </ul>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('fr')">FR</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <p class="hero-tag" data-en="available for freelance" data-fr="disponible en freelance">available for freelance</p>
+  <h1>Paul<br><span class="accent">Buquet</span><span class="cursor-blink"></span></h1>
+  <p class="hero-sub" data-en="Full Stack Developer with 8+ years building high-performance e-commerce and EdTech platforms. I turn complex problems into clean, scalable solutions." data-fr="Développeur Full Stack avec 8 ans d'expérience sur des plateformes e-commerce et EdTech à haute performance. Je transforme les problèmes complexes en solutions propres et scalables.">
+    Full Stack Developer with 8+ years building high-performance e-commerce and EdTech platforms. I turn complex problems into clean, scalable solutions.
+  </p>
+  <div class="hero-ctas">
+    <a href="#contact" class="btn btn-primary" data-en="Get in touch" data-fr="Me contacter">Get in touch</a>
+    <a href="#projects" class="btn btn-outline" data-en="See my work" data-fr="Voir mes projets">See my work</a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">8+</div>
+      <div class="stat-label" data-en="years of experience" data-fr="ans d'expérience">years of experience</div>
+    </div>
+    <div>
+      <div class="stat-num">100K+</div>
+      <div class="stat-label" data-en="daily orders handled" data-fr="commandes/jour gérées">daily orders handled</div>
+    </div>
+    <div>
+      <div class="stat-num">350+</div>
+      <div class="stat-label" data-en="pharmacies connected" data-fr="pharmacies connectées">pharmacies connected</div>
+    </div>
+    <div>
+      <div class="stat-num">99.9%</div>
+      <div class="stat-label" data-en="uptime delivered" data-fr="uptime garanti">uptime delivered</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label reveal" data-en="about" data-fr="à propos">about</p>
+  <h2 class="reveal" data-en="Who am I<span class='accent'>?</span>" data-fr="Qui suis-je<span class='accent'> ?</span>">Who am I <span class="accent">?</span></h2>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p data-en="I'm a <strong>Full Stack Developer</strong> based in Vilnius, Lithuania, with over 8 years of experience building robust digital platforms for retail giants and academic institutions." data-fr="Je suis un <strong>développeur Full Stack</strong> basé à Vilnius, Lituanie, avec plus de 8 ans d'expérience dans la création de plateformes digitales robustes pour de grandes enseignes retail et des institutions académiques.">
+        I'm a <strong>Full Stack Developer</strong> based in Vilnius, Lithuania, with over 8 years of experience building robust digital platforms for retail giants and academic institutions.
+      </p>
+      <p data-en="I've led projects from specification to production — managing technical risk, aligning with stakeholders, and shipping solutions that <strong>actually scale</strong>." data-fr="J'ai piloté des projets de la spécification à la mise en production — gérant les risques techniques, collaborant avec les parties prenantes et livrant des solutions qui <strong>tiennent vraiment à l'échelle</strong>.">
+        I've led projects from specification to production — managing technical risk, aligning with stakeholders, and shipping solutions that <strong>actually scale</strong>.
+      </p>
+      <p data-en="Now freelancing, I'm looking for ambitious projects where I can bring real value: <strong>e-commerce, EdTech, or any complex web platform</strong>." data-fr="Désormais freelance, je recherche des projets ambitieux où je peux apporter une vraie valeur ajoutée : <strong>e-commerce, EdTech, ou toute plateforme web complexe</strong>.">
+        Now freelancing, I'm looking for ambitious projects where I can bring real value: <strong>e-commerce, EdTech, or any complex web platform</strong>.
+      </p>
+    </div>
+    <div class="about-card reveal">
+      <div class="about-card-title" data-en="// backend" data-fr="// backend">// backend</div>
+      <div class="tag-row">
+        <span class="tag">PHP</span>
+        <span class="tag">Laravel</span>
+        <span class="tag">.NET</span>
+        <span class="tag">ASP.NET</span>
+        <span class="tag">Blazor</span>
+      </div>
+      <div class="about-card-title" data-en="// frontend" data-fr="// frontend">// frontend</div>
+      <div class="tag-row">
+        <span class="tag blue">Angular</span>
+        <span class="tag blue">JavaScript</span>
+        <span class="tag blue">HTML/CSS</span>
+      </div>
+      <div class="about-card-title" data-en="// tools & practices" data-fr="// outils & pratiques">// tools & practices</div>
+      <div class="tag-row">
+        <span class="tag red">Git</span>
+        <span class="tag red">Azure DevOps</span>
+        <span class="tag red">CI/CD</span>
+        <span class="tag red">Agile</span>
+        <span class="tag red">MySQL</span>
+        <span class="tag red">MS SQL</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <p class="section-label reveal" data-en="what I do" data-fr="ce que je fais">what I do</p>
+  <h2 class="reveal" data-en="Services I <span class='accent'>offer</span>" data-fr="Services que <span class='accent'>je propose</span>">Services I <span class="accent">offer</span></h2>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-icon">🛒</div>
+      <div class="service-title" data-en="E-commerce Development" data-fr="Développement E-commerce">E-commerce Development</div>
+      <div class="service-desc" data-en="Custom e-commerce platforms built to handle scale — from 10 to 100,000+ daily orders. Performance optimization, checkout flows, catalog management." data-fr="Plateformes e-commerce sur-mesure conçues pour tenir à l'échelle — de 10 à 100 000+ commandes/jour. Optimisation des performances, tunnels de paiement, gestion catalogue.">
+        Custom e-commerce platforms built to handle scale — from 10 to 100,000+ daily orders. Performance optimization, checkout flows, catalog management.
+      </div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🎓</div>
+      <div class="service-title" data-en="EdTech Platforms" data-fr="Plateformes EdTech">EdTech Platforms</div>
+      <div class="service-desc" data-en="Academic management tools, student portals, registration systems and project tracking platforms. From spec to deployment." data-fr="Outils de gestion académique, portails étudiants, systèmes d'inscription et plateformes de suivi de projets. De la spec au déploiement.">
+        Academic management tools, student portals, registration systems and project tracking platforms. From spec to deployment.
+      </div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">⚙️</div>
+      <div class="service-title" data-en="Full Stack Web Apps" data-fr="Applications Web Full Stack">Full Stack Web Apps</div>
+      <div class="service-desc" data-en="End-to-end web application development with PHP/Laravel or .NET on the backend and Angular on the frontend. Clean architecture, maintainable code." data-fr="Développement d'applications web de bout en bout avec PHP/Laravel ou .NET côté serveur et Angular côté client. Architecture propre, code maintenable.">
+        End-to-end web application development with PHP/Laravel or .NET on the backend and Angular on the frontend. Clean architecture, maintainable code.
+      </div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🔍</div>
+      <div class="service-title" data-en="Code Audit & Consulting" data-fr="Audit de code & Conseil">Code Audit & Consulting</div>
+      <div class="service-desc" data-en="Technical audit of existing codebases, architecture reviews, performance profiling and actionable recommendations for legacy systems." data-fr="Audit technique de bases de code existantes, revues d'architecture, profilage des performances et recommandations concrètes pour les systèmes legacy.">
+        Technical audit of existing codebases, architecture reviews, performance profiling and actionable recommendations for legacy systems.
+      </div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🚀</div>
+      <div class="service-title" data-en="DevOps & CI/CD Setup" data-fr="DevOps & Mise en place CI/CD">DevOps & CI/CD Setup</div>
+      <div class="service-desc" data-en="Pipeline configuration on Azure DevOps, automated testing setup, deployment workflows and monitoring for zero-downtime delivery." data-fr="Configuration de pipelines Azure DevOps, mise en place de tests automatisés, workflows de déploiement et monitoring pour une livraison sans interruption.">
+        Pipeline configuration on Azure DevOps, automated testing setup, deployment workflows and monitoring for zero-downtime delivery.
+      </div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🤝</div>
+      <div class="service-title" data-en="Tech Lead / Agency Backup" data-fr="Tech Lead / Renfort d'agence">Tech Lead / Agency Backup</div>
+      <div class="service-desc" data-en="Available for agencies needing senior developer reinforcement on existing projects — subcontracting, technical leadership, code reviews." data-fr="Disponible pour les agences ayant besoin de renfort développeur senior sur des projets en cours — sous-traitance, leadership technique, revues de code.">
+        Available for agencies needing senior developer reinforcement on existing projects — subcontracting, technical leadership, code reviews.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label reveal" data-en="selected work" data-fr="réalisations">selected work</p>
+  <h2 class="reveal" data-en="Projects that <span class='accent'>shipped</span>" data-fr="Projets <span class='accent'>livrés</span>">Projects that <span class="accent">shipped</span></h2>
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <div class="project-meta">
+        <div class="project-company">Leclerc — Netysoft</div>
+        <div class="project-year">2018 – 2024</div>
+      </div>
+      <div class="project-title" data-en="High-Traffic E-commerce Platform" data-fr="Plateforme E-commerce Haute Trafic">High-Traffic E-commerce Platform</div>
+      <div class="project-desc" data-en="Led the development and maintenance of e-commerce platforms for the Leclerc retail group. Handled real-time inventory, catalog management and order processing at massive scale." data-fr="Pilotage du développement et de la maintenance des plateformes e-commerce pour le groupe Leclerc. Gestion de l'inventaire en temps réel, du catalogue et du traitement des commandes à grande échelle.">
+        Led the development and maintenance of e-commerce platforms for the Leclerc retail group. Handled real-time inventory, catalog management and order processing at massive scale.
+      </div>
+      <div class="project-kpis">
+        <div>
+          <div class="kpi-val">100K+</div>
+          <div class="kpi-label" data-en="daily orders" data-fr="commandes/jour">daily orders</div>
+        </div>
+        <div>
+          <div class="kpi-val">50K+</div>
+          <div class="kpi-label" data-en="SKUs managed" data-fr="références gérées">SKUs managed</div>
+        </div>
+        <div>
+          <div class="kpi-val">6 yrs</div>
+          <div class="kpi-label" data-en="maintained & scaled" data-fr="maintenu & scalé">maintained & scaled</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-meta">
+        <div class="project-company">Pharmacy Chain — Netysoft</div>
+        <div class="project-year">2018 – 2024</div>
+      </div>
+      <div class="project-title" data-en="Pharmacy E-commerce Network" data-fr="Réseau E-commerce Pharmacies">Pharmacy E-commerce Network</div>
+      <div class="project-desc" data-en="Project Manager & Lead Developer for a unified e-commerce platform connecting 350+ pharmacies. Redesigned checkout flow to cut drop-off and boost conversion." data-fr="Chef de projet & Lead Dev pour une plateforme e-commerce unifiée connectant 350+ pharmacies. Refonte du tunnel de paiement pour réduire l'abandon et booster la conversion.">
+        Project Manager & Lead Developer for a unified e-commerce platform connecting 350+ pharmacies. Redesigned checkout flow to cut drop-off and boost conversion.
+      </div>
+      <div class="project-kpis">
+        <div>
+          <div class="kpi-val">350+</div>
+          <div class="kpi-label" data-en="pharmacies" data-fr="pharmacies">pharmacies</div>
+        </div>
+        <div>
+          <div class="kpi-val">+40%</div>
+          <div class="kpi-label" data-en="checkout speed" data-fr="vitesse de paiement">checkout speed</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-meta">
+        <div class="project-company">IESEG Lille</div>
+        <div class="project-year">2024 – 2026</div>
+      </div>
+      <div class="project-title" data-en="Academic Management Tools" data-fr="Outils de Gestion Académique">Academic Management Tools</div>
+      <div class="project-desc" data-en="Designed and developed registration and project management systems for students and staff. Built with Blazor, .NET and Angular." data-fr="Conception et développement de systèmes d'inscription et de gestion de projets pour étudiants et personnel. Construit avec Blazor, .NET et Angular.">
+        Designed and developed registration and project management systems for students and staff. Built with Blazor, .NET and Angular.
+      </div>
+      <div class="project-kpis">
+        <div>
+          <div class="kpi-val">99.9%</div>
+          <div class="kpi-label" data-en="uptime" data-fr="uptime">uptime</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack">
+  <p class="section-label reveal" data-en="technologies" data-fr="technologies">technologies</p>
+  <h2 class="reveal" data-en="My <span class='accent'>stack</span>" data-fr="Ma <span class='accent'>stack</span>">My <span class="accent">stack</span></h2>
+  <div class="stack-grid">
+    <div class="stack-item reveal"><div class="stack-emoji">🐘</div><div class="stack-name">PHP</div><div class="stack-cat">Backend</div></div>
+    <div class="stack-item reveal"><div class="stack-emoji">🔴</div><div class="stack-name">Laravel</div><div class="stack-cat">Framework</div></div>
+    <div class="stack-item reveal"><div class="stack-emoji">🔷</div><div class="stack-name">.NET</div><div class="stack-cat">Backend</div></div>
+    <div class="stack-item reveal"><div class="stack-emoji">🔥</div><div class="stack-name">Blazor</div><div class="stack-cat">Frontend</div></div>
+    <div class="stack-item reveal"><div class="stack-emoji">🅰️</div><div class="stack-name">Angular</div><div class="stack-cat">Frontend</div></div>
+    <div class="stack-item reveal"><div class="stack-emoji">🟨</div><div class="stack-name">JavaScript</div><div class="stack-cat">Frontend</div></div>
+    <div class="stack-item reveal"><div class="stack-emoji">🐬</div><div class="stack-name">MySQL</div><div class="stack-cat">Database</div></div>
+    <div class="stack-item reveal"><div class="stack-emoji">🗄️</div><div class="stack-name">MS SQL</div><div class="stack-cat">Database</div></div>
+    <div class="stack-item reveal"><div class="stack-emoji">☁️</div><div class="stack-name">Azure DevOps</div><div class="stack-cat">DevOps</div></div>
+    <div class="stack-item reveal"><div class="stack-emoji">🔁</div><div class="stack-name">CI/CD</div><div class="stack-cat">DevOps</div></div>
+    <div class="stack-item reveal"><div class="stack-emoji">🌿</div><div class="stack-name">Git</div><div class="stack-cat">Tooling</div></div>
+    <div class="stack-item reveal"><div class="stack-emoji">⚡</div><div class="stack-name">Agile/Scrum</div><div class="stack-cat">Process</div></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label reveal" data-en="contact" data-fr="contact">contact</p>
+  <h2 class="reveal" data-en="Let's build something <span class='accent'>together</span>" data-fr="Construisons quelque chose <span class='accent'>ensemble</span>">Let's build something <span class="accent">together</span></h2>
+  <div class="contact-box reveal">
+    <p style="color:var(--muted); max-width:380px;" data-en="Available for freelance missions — e-commerce, EdTech, full stack development, or consulting." data-fr="Disponible pour des missions freelance — e-commerce, EdTech, développement full stack, ou conseil.">
+      Available for freelance missions — e-commerce, EdTech, full stack development, or consulting.
+    </p>
+    <div class="contact-email">paulbuquet1997@gmail.com</div>
+    <a href="mailto:paulbuquet1997@gmail.com" class="btn btn-primary" data-en="Send a message" data-fr="Envoyer un message">Send a message</a>
+  </div>
+</section>
+
+<footer>
+  Paul Buquet © 2026
+</footer>
+
+<script>
+  // LANGUAGE TOGGLE
+  let currentLang = 'en';
+
+  function setLang(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      if ((lang === 'en' && btn.textContent === 'EN') || (lang === 'fr' && btn.textContent === 'FR')) {
+        btn.classList.add('active');
+      }
+    });
+
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const val = el.getAttribute('data-' + lang);
+      if (val) el.innerHTML = val;
+    });
+
+    document.documentElement.lang = lang;
+  }
+
+  // SCROLL REVEAL
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
