@@ -482,16 +482,17 @@
 
 <!-- HERO -->
 <section id="hero">
-  <p class="hero-tag" data-en="available for freelance or intern missions" data-fr="disponible en freelance ou en interne">available for freelance or intern missions</p>
+  <p class="hero-tag" data-en="available for freelance everywhere or full-time opportunities in Vilnius" data-fr="disponible en freelance partout ou pour un poste à temps plein à Vilnius">available for freelance everywhere or full-time opportunities in Vilnius</p>
   <h1>Paul<br><span class="accent">Buquet</span><span class="cursor-blink"></span></h1>
   <p class="hero-sub"
      data-en="Full Stack Developer with 8+ years building high-performance e-commerce and EdTech platforms. I turn complex problems into clean, scalable solutions."
-     data-fr="Développeur Full Stack avec 8 ans d'expérience sur des plateformes e-commerce et EdTech à haute performance. Je transforme les problèmes complexes en solutions propres et scalables.">
+     data-fr="Développeur Full Stack avec 8 ans d'expérience sur des plateformes e-commerce et EdTech à haute performance. Je transforme les problèmes complexes en solutions propres et évolutives.">
     Full Stack Developer with 8+ years building high-performance e-commerce and EdTech platforms. I turn complex problems into clean, scalable solutions.
   </p>
   <div class="hero-ctas">
     <button onclick="openModal()" class="btn btn-primary" data-en="Get in touch" data-fr="Me contacter">Get in touch</button>
-    <a href="CV_EN_Paul_Buquet.pdf" target="_blank" id="cvDownloadBtn" class="btn btn-outline" data-en="Download CV" data-fr="Télécharger CV">Download CV</a>
+    <a href="CV_EN_Paul_Buquet.pdf" target="_blank" rel="noopener noreferrer" id="cvDownloadBtn" class="btn btn-outline" data-en="Download CV" data-fr="Télécharger CV">Download CV</a>
+    <a href="https://www.linkedin.com/in/paul-buquet-45b3b1156/" target="_blank" rel="noopener noreferrer" class="btn btn-outline" data-en="LinkedIn" data-fr="LinkedIn">LinkedIn</a>
   </div>
 </section>
 
@@ -627,7 +628,7 @@
       <p data-en="Available for freelance missions — e-commerce, EdTech, full stack development, or consulting." data-fr="Disponible pour des missions freelance — e-commerce, EdTech, développement full stack, ou conseil.">Available for freelance missions — e-commerce, EdTech, full stack development, or consulting.</p>
     </div>
     <div class="contact-text reveal">
-      <p data-en="Contact me here :" data-fr="Contactez moi ici :">Contact me here :</p>
+      <p data-en="Contact me here :" data-fr="Contactez-moi ici :">Contact me here :</p>
       <button onclick="openModal()" class="btn btn-primary" data-en="Send a message" data-fr="Envoyer un message">Send a message</button>
     </div>
   </div>
@@ -744,7 +745,8 @@
   }
 
   // LANGUAGE
-  let currentLang = 'en';
+  const browserLang = navigator.language || navigator.userLanguage || 'en';
+  let currentLang = browserLang.toLowerCase().startsWith('fr') ? 'fr' : 'en';
 
   function setLang(lang) {
     currentLang = lang;
@@ -770,6 +772,9 @@
     { threshold: 0.1 }
   );
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Apply detected language on load
+  setLang(currentLang);
 </script>
 </body>
 </html>
