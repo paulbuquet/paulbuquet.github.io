@@ -283,7 +283,7 @@
       transition: all 0.3s;
     }
 
-    .project-card:first-child { grid-column: span 2; }
+    .project-card:first-child, .project-card.featured { grid-column: span 2; }
     .project-card:hover { border-color: rgba(0,255,195,0.3); }
 
     .project-meta { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
@@ -538,8 +538,12 @@
   <div class="services-grid">
     <div class="service-card reveal">
       <div class="service-icon">🛒</div>
-      <div class="service-title" data-en="E-commerce Development"   data-fr="Développement E-commerce">E-commerce Development</div>
-      <div class="service-desc"  data-en="Custom e-commerce platforms built to handle scale — from 10 to 100,000+ daily orders. Performance optimization, checkout flows, catalog management." data-fr="Plateformes e-commerce sur-mesure conçues pour tenir à l'échelle — de 10 à 100 000+ commandes/jour. Optimisation des performances, tunnels de paiement, gestion catalogue.">Custom e-commerce platforms built to handle scale — from 10 to 100,000+ daily orders. Performance optimization, checkout flows, catalog management.</div>
+      <div class="service-title" data-en="E-commerce Development" data-fr="Développement E-commerce">E-commerce Development</div>
+      <div class="service-desc"
+          data-en="From a local shop's first online store to 100,000+ daily orders — I build e-commerce platforms that fit your scale and budget."
+          data-fr="De la première boutique en ligne d'un commerce local aux 100 000+ commandes/jour — je construis des solutions e-commerce adaptées à votre échelle et votre budget.">
+        From a local shop's first online store to 100,000+ daily orders — I build e-commerce platforms that fit your scale and budget.
+      </div>
     </div>
     <div class="service-card reveal">
       <div class="service-icon">🎓</div>
@@ -611,6 +615,44 @@
       <div class="project-desc"  data-en="Designed and developed registration and project management systems for students and staff. Built with Blazor, .NET and Angular." data-fr="Conception et développement de systèmes d'inscription et de gestion de projets pour étudiants et personnel. Construit avec Blazor, .NET et Angular.">Designed and developed registration and project management systems for students and staff. Built with Blazor, .NET and Angular.</div>
       <div class="project-kpis">
         <div><div class="kpi-val">99.9%</div><div class="kpi-label" data-en="uptime" data-fr="uptime">uptime</div></div>
+      </div>
+    </div>
+
+    <div class="project-card featured reveal">
+      <div class="project-meta">
+        <div class="project-company">Freelance</div>
+        <div class="project-year">2023 →</div>
+      </div>
+      <div class="project-title" data-en="Websites for entrepreneurs & local businesses" data-fr="Sites web pour entrepreneurs & commerces locaux">Websites for entrepreneurs & local businesses</div>
+      <div class="project-desc"
+          data-en="From showcase sites to full e-commerce — I help entrepreneurs and small businesses build a strong online presence, fast and without the agency price tag."
+          data-fr="Du site vitrine à la boutique en ligne — j'accompagne entrepreneurs et commerces locaux pour créer une présence en ligne efficace, rapidement et sans le budget d'une agence.">
+        From showcase sites to full e-commerce — I help entrepreneurs and small businesses build a strong online presence, fast and without the agency price tag.
+      </div>
+      <div class="project-kpis">
+        <div><div class="kpi-val">100%</div><div class="kpi-label" data-en="tailored" data-fr="sur-mesure">tailored</div></div>
+        <div><div class="kpi-val">~2–4</div><div class="kpi-label" data-en="weeks delivery" data-fr="semaines de délai">weeks delivery</div></div>
+        <div><div class="kpi-val">FR/EN</div><div class="kpi-label" data-en="bilingual support" data-fr="support bilingue">bilingual support</div></div>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-meta">
+        <div class="project-company">Michel Sauvage — Freelance</div>
+        <div class="project-year">2023</div>
+      </div>
+      <div class="project-title" data-en="Website for a local chef & caterer" data-fr="Site web pour un chef traiteur local">Website for a local chef & caterer</div>
+      <div class="project-desc"
+          data-en="Full showcase website for Michel Sauvage, a caterer based in Arras — menus, gallery, weekly specials and contact. Built to be fast, mobile-friendly and easy to update."
+          data-fr="Site vitrine complet pour Michel Sauvage, chef traiteur à Arras — menus, galerie, plat du vendredi et contact. Rapide, responsive et facile à mettre à jour.">
+        Full showcase website for Michel Sauvage, a caterer based in Arras — menus, gallery, weekly specials and contact. Built to be fast, mobile-friendly and easy to update.
+      </div>
+      <div class="project-kpis">
+        <div><div class="kpi-val">🍽️</div><div class="kpi-label" data-en="food & catering" data-fr="restauration">food & catering</div></div>
+        <div><div class="kpi-val">FR</div><div class="kpi-label" data-en="language" data-fr="langue">language</div></div>
+      </div>
+      <div style="margin-top: 1.5rem;">
+        <a href="https://michelsauvage.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="font-size: 0.75rem;" data-en="View live site →" data-fr="Voir le site →">View live site →</a>
       </div>
     </div>
 
