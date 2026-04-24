@@ -23,7 +23,7 @@
       --sans: 'DM Sans', sans-serif;
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
 
     body {
       background: var(--light);
@@ -32,6 +32,7 @@
       font-size: 16px;
       line-height: 1.6;
       overflow-x: hidden;
+      width: 100%;
     }
 
     /* ── CURSOR ── */
@@ -298,10 +299,22 @@
     #pourquoi { background: var(--cream); }
     .why-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr auto 1fr;
       gap: 5rem;
       align-items: center;
       margin-top: 4rem;
+    }
+    .why-photo {
+      width: 220px;
+      align-self: center;
+    }
+    .why-photo img {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      border-radius: 4px;
+      display: block;
+      box-shadow: 8px 8px 0 var(--gold); /* petit effet décalé dans ta palette */
     }
     .why-text p {
       color: var(--mid);
@@ -662,7 +675,9 @@
       #hero { grid-template-columns: 1fr; }
       .hero-right { display: none; }
       .hero-left { padding: 5rem 2rem 4rem; }
-      .why-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .why-grid { grid-template-columns: 1fr; }
+      .why-photo { width: 160px; } /* petite photo centrée */
+      .why-photo img { margin: 0 auto; }
       .projects-grid { grid-template-columns: 1fr 1fr; }
       .stack-grid { grid-template-columns: repeat(3, 1fr); }
       .process-steps { grid-template-columns: 1fr 1fr; gap: 2rem; }
@@ -672,14 +687,37 @@
       .container { padding: 0 2rem; }
     }
     @media (max-width: 640px) {
+      /* Nav */
+      nav { padding: 1rem 1.2rem; }
       .nav-links { display: none; }
+
+      /* Hero : supprime le grand espace en haut */
+      #hero { min-height: auto; padding-top: 0; }
+      .hero-left { padding: 5rem 1.2rem 3rem; min-height: auto; }
+      h1 { font-size: 2.2rem; }
+      .hero-sub { font-size: 0.95rem; max-width: 100%; }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .btn-primary, .btn-outline { text-align: center; justify-content: center; }
+      .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+      .stat-num { font-size: 1.8rem; }
+
+      /* Sections */
+      section { padding: 4rem 0; }
+      .container { padding: 0 1.2rem; }
+      h2 { font-size: 1.7rem; }
+
+      /* Grilles */
       .projects-grid { grid-template-columns: 1fr; }
       .stack-grid { grid-template-columns: 1fr 1fr; }
       .process-steps { grid-template-columns: 1fr; }
       .form-row { grid-template-columns: 1fr; }
-      footer { flex-direction: column; text-align: center; }
-      h1 { font-size: 2.6rem; }
-      .hero-stats { gap: 2rem; }
+
+      /* Footer */
+      footer { flex-direction: column; text-align: center; padding: 2rem 1.2rem; }
+      .footer-links { justify-content: center; }
+
+      /* Curseur custom masqué sur mobile (touch) */
+      .cursor, .cursor-ring { display: none; }
     }
   </style>
 </head>
@@ -769,6 +807,9 @@
           <p>
             Je travaille en <strong>direct avec vous</strong>, je vous explique chaque étape, et je ne disparais pas après la mise en ligne.
           </p>
+        </div>
+        <div class="why-photo">
+          <img src="photo.jpg" alt="Paul Buquet, développeur web freelance" />
         </div>
         <div class="why-cards reveal">
           <div class="why-card">
