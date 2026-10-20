@@ -491,6 +491,16 @@
 
     /* ── PROJETS PERSOS ── */
     #projets-persos { background: var(--cream); }
+    .projects-intro {
+      max-width: 700px;
+      margin: 2rem auto 3rem;
+      text-align: justify;
+      font-size: 1rem;
+      color: var(--mid);
+      line-height: 1.8;
+      font-weight: 300;
+    }
+    .projects-intro p { margin: 0; }
     .project-card.personal .project-img { background: transparent; }
     .project-card.personal .project-img::before { display: none; }
     .project-card.personal .project-img-accent { display: none; }
@@ -650,7 +660,7 @@
         <div class="showcase-card">
           <div class="sc-icon">🛒</div>
           <div class="sc-title">E-commerce Grande Distribution</div>
-          <div class="sc-desc">Laravel · Azure · 10k cmd/jour</div>
+          <div class="sc-desc">Laravel · Crons · 10k cmd/jour</div>
           <div class="sc-bar"><div class="sc-bar-fill" style="width:78%"></div></div>
         </div>
         <div class="showcase-card">
@@ -802,6 +812,9 @@
     <div class="container">
       <div class="section-label">Side Projects</div>
       <h2>Projets<br><em>personnels</em></h2>
+      <div class="projects-intro reveal">
+        <p>Je suis en veille permanente. J'aime beaucoup créer des applications ou des logiciels portables pour aider les gens au quotidien. La grande majorité de mes créations ne sont donc pas disponibles publiquement car soit sans réel intérêt soit purement personnel.</p>
+      </div>
       <div class="projects-grid">
         <a href="https://github.com/paulbuquet?tab=repositories" target="_blank" rel="noopener" class="project-card github-card reveal">
           <div class="project-img" style="background:#24292e"><span>🐙</span></div>
