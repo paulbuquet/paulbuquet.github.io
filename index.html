@@ -19,6 +19,9 @@
   <link rel="canonical" href="https://paulbuquet.fr" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 
+  <link rel="stylesheet" href="assets/css/common.css">
+  <link rel="stylesheet" href="assets/css/index.css">
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -45,563 +48,6 @@
     ]
   }
   </script>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --cream: #F5F0E8;
-      --dark: #1A1814;
-      --brown: #8B6F47;
-      --gold: #C8963E;
-      --rust: #B5522A;
-      --light: #FAF8F4;
-      --mid: #6B6560;
-      --border: rgba(139,111,71,0.2);
-      --serif: 'Playfair Display', Georgia, serif;
-      --sans: 'DM Sans', sans-serif;
-      --nav-h: 72px;
-    }
-
-    html { scroll-behavior: smooth; overflow-x: hidden; }
-
-    body {
-      background: var(--light);
-      color: var(--dark);
-      font-family: var(--sans);
-      font-size: 16px;
-      line-height: 1.6;
-      overflow-x: hidden;
-      width: 100%;
-    }
-
-    /* ── CURSOR ── */
-    .cursor {
-      width: 10px; height: 10px;
-      background: var(--gold);
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 9999;
-      transition: transform 0.15s ease;
-      mix-blend-mode: multiply;
-    }
-    .cursor-ring {
-      width: 36px; height: 36px;
-      border: 1.5px solid var(--gold);
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 9998;
-      transition: transform 0.35s ease, opacity 0.3s;
-      opacity: 0.6;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0;
-      z-index: 100;
-      height: var(--nav-h);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 4rem;
-      background: rgba(250,248,244,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-logo {
-      display: flex; align-items: center;
-      text-decoration: none;
-    }
-    .nav-logo img { height: 44px; width: auto; display: block; }
-    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
-    .nav-links a {
-      font-size: 0.82rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--mid);
-      text-decoration: none;
-      position: relative;
-      transition: color 0.2s;
-    }
-    .nav-links a::after {
-      content: '';
-      position: absolute; bottom: -3px; left: 0;
-      width: 0; height: 1px;
-      background: var(--gold);
-      transition: width 0.3s ease;
-    }
-    .nav-links a:hover { color: var(--dark); }
-    .nav-links a:hover::after { width: 100%; }
-    .nav-cta {
-      background: var(--dark);
-      color: var(--cream) !important;
-      padding: 0.55rem 1.4rem;
-      border-radius: 2px;
-      transition: background 0.3s, color 0.3s;
-    }
-    .nav-cta::after { display: none !important; }
-    .nav-cta:hover { background: var(--gold) !important; color: var(--dark) !important; }
-
-    /* ── HERO ── */
-    #hero {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      padding-top: var(--nav-h);
-    }
-    .hero-left {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 5rem 4rem 5rem 6rem;
-    }
-    .hero-tag {
-      display: inline-flex; align-items: center; gap: 0.6rem;
-      font-size: 0.72rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--gold);
-      margin-bottom: 1.8rem;
-    }
-    .hero-tag::before {
-      content: '';
-      display: block;
-      width: 28px; height: 1px;
-      background: var(--gold);
-    }
-    h1 {
-      font-family: var(--serif);
-      font-size: clamp(2.6rem, 5vw, 4.8rem);
-      font-weight: 400;
-      line-height: 1.12;
-      color: var(--dark);
-      margin-bottom: 0.3rem;
-    }
-    h1 em { font-style: italic; color: var(--brown); }
-    .hero-sub {
-      font-size: 1.05rem;
-      color: var(--mid);
-      max-width: 440px;
-      margin: 1.6rem 0 2.8rem;
-      font-weight: 300;
-      line-height: 1.75;
-    }
-    .hero-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      background: var(--dark);
-      color: var(--cream);
-      padding: 0.9rem 2rem;
-      text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      border-radius: 2px;
-      transition: background 0.25s, transform 0.2s;
-    }
-    .btn-primary:hover { background: var(--gold); color: var(--dark); transform: translateY(-2px); }
-    .btn-outline {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      border: 1.5px solid var(--border);
-      color: var(--dark);
-      padding: 0.9rem 1.8rem;
-      text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      border-radius: 2px;
-      transition: border-color 0.25s, color 0.25s, transform 0.2s;
-    }
-    .btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
-    .hero-stats {
-      display: flex; gap: 3rem;
-      margin-top: 4rem;
-      padding-top: 2.5rem;
-      border-top: 1px solid var(--border);
-    }
-    .stat-num {
-      font-family: var(--serif);
-      font-size: 2.2rem;
-      color: var(--dark);
-      line-height: 1;
-    }
-    .stat-num span { color: var(--gold); }
-    .stat-label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--mid);
-      margin-top: 0.3rem;
-    }
-    .hero-right {
-      position: relative;
-      overflow: hidden;
-      background: var(--dark);
-    }
-    .hero-bg-text {
-      position: absolute;
-      font-family: var(--serif);
-      font-size: clamp(8rem, 15vw, 18rem);
-      font-weight: 700;
-      color: rgba(255,255,255,0.03);
-      line-height: 1;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      white-space: nowrap;
-      pointer-events: none;
-    }
-    .hero-card-grid {
-      position: absolute; inset: 0;
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
-      gap: 1.2rem;
-      padding: 2rem;
-    }
-    .showcase-card {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 4px;
-      padding: 1.2rem 1.6rem;
-      width: 100%;
-      max-width: 320px;
-      backdrop-filter: blur(4px);
-      animation: floatCard 4s ease-in-out infinite;
-    }
-    .showcase-card:nth-child(2) { animation-delay: -1.5s; margin-left: 2rem; }
-    .showcase-card:nth-child(3) { animation-delay: -3s; margin-left: -1rem; }
-    @keyframes floatCard {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-    .sc-icon { font-size: 1.4rem; margin-bottom: 0.5rem; }
-    .sc-title { color: rgba(255,255,255,0.9); font-size: 0.9rem; font-weight: 500; }
-    .sc-desc { color: rgba(255,255,255,0.45); font-size: 0.75rem; margin-top: 0.2rem; }
-    .sc-bar { margin-top: 0.8rem; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
-    .sc-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--gold), var(--rust));
-      border-radius: 2px;
-      animation: loadBar 2.5s ease forwards;
-    }
-    @keyframes loadBar { from { width: 0%; } }
-
-    /* ── SECTIONS ── */
-    section { padding: 7rem 0; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 4rem; }
-    .section-label {
-      display: inline-flex; align-items: center; gap: 0.6rem;
-      font-size: 0.7rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--gold);
-      margin-bottom: 1.2rem;
-    }
-    .section-label::before {
-      content: '';
-      display: block;
-      width: 20px; height: 1px;
-      background: var(--gold);
-    }
-    h2 {
-      font-family: var(--serif);
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 400;
-      line-height: 1.2;
-      color: var(--dark);
-    }
-    h2 em { font-style: italic; color: var(--brown); }
-
-    /* ── PARCOURS & EXPERTISE ── */
-    #parcours { background: var(--cream); }
-    .parcours-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: start;
-      margin-top: 4rem;
-    }
-    .parcours-bio p {
-      color: var(--mid);
-      font-size: 1.05rem;
-      font-weight: 300;
-      line-height: 1.8;
-      margin-bottom: 1rem;
-    }
-    .parcours-bio p:last-child { margin-bottom: 0; }
-    .parcours-bio strong { color: var(--dark); font-weight: 500; }
-    .competences-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.2rem;
-    }
-    .competence-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 1.8rem;
-      transition: transform 0.25s, box-shadow 0.25s;
-    }
-    .competence-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(26,24,20,0.08); }
-    .competence-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
-    .competence-logo { width: 48px; height: 48px; display: block; margin-bottom: 0.8rem; }
-    .competence-card h3 { font-size: 0.9rem; font-weight: 500; color: var(--dark); margin-bottom: 0.5rem; }
-    .competence-card p { font-size: 0.82rem; color: var(--mid); line-height: 1.6; }
-
-    /* ── EXPÉRIENCE ── */
-    #experience { background: var(--light); }
-    .timeline {
-      position: relative;
-      margin-top: 4rem;
-      padding-left: 2rem;
-    }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 2px;
-      background: var(--border);
-    }
-    .timeline-item {
-      position: relative;
-      padding-bottom: 3rem;
-    }
-    .timeline-item:last-child { padding-bottom: 0; }
-    .timeline-marker {
-      position: absolute;
-      left: -2.5rem;
-      top: 0.3rem;
-      width: 14px; height: 14px;
-      border-radius: 50%;
-      background: var(--gold);
-      border: 3px solid var(--light);
-      box-shadow: 0 0 0 2px var(--gold);
-    }
-    .timeline-date {
-      font-size: 0.75rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--gold);
-      margin-bottom: 0.4rem;
-    }
-    .timeline-content h3 {
-      font-size: 1.05rem;
-      font-weight: 500;
-      color: var(--dark);
-      margin-bottom: 0.3rem;
-    }
-    .timeline-content h3 span { color: var(--mid); font-weight: 400; }
-    .timeline-stack {
-      font-size: 0.8rem;
-      color: var(--mid);
-      margin-bottom: 1rem;
-      font-weight: 400;
-    }
-    .timeline-achievements {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    .timeline-achievements li {
-      font-size: 0.85rem;
-      color: var(--mid);
-      line-height: 1.6;
-      padding-left: 1.2rem;
-      position: relative;
-    }
-    .timeline-achievements li::before {
-      content: '→';
-      position: absolute;
-      left: 0;
-      color: var(--gold);
-      font-weight: 600;
-    }
-
-    /* ── PROJETS CLÉS ── */
-    #projets-cles { background: var(--light); }
-    .projects-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 3.5rem; flex-wrap: wrap; gap: 1rem; }
-    .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 4rem;}
-    .project-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .project-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(26,24,20,0.08); }
-    .project-img {
-      height: 180px;
-      background: var(--dark);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 3rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .project-img::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, var(--dark) 0%, #2d2820 100%);
-    }
-    .project-img span { position: relative; z-index: 1; }
-    .project-img-accent {
-      position: absolute;
-      width: 120px; height: 120px;
-      border-radius: 50%;
-      background: var(--gold);
-      opacity: 0.1;
-      bottom: -30px; right: -20px;
-      z-index: 0;
-    }
-    .project-body { padding: 1.4rem; }
-    .project-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.6rem; }
-    .tag {
-      font-size: 0.65rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 0.2rem 0.5rem;
-      border-radius: 2px;
-      background: var(--cream);
-      color: var(--brown);
-    }
-    .project-title { font-size: 0.95rem; font-weight: 500; color: var(--dark); margin-bottom: 0.4rem; line-height: 1.3; }
-    .project-desc { font-size: 0.8rem; color: var(--mid); line-height: 1.6; margin-bottom: 0.6rem; }
-    .project-stack {
-      display: flex; gap: 0.3rem; flex-wrap: wrap; margin-bottom: 0.6rem;
-    }
-    .project-metrics {
-      display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 0.8rem;
-      font-size: 0.7rem;
-      color: var(--gold);
-      font-weight: 500;
-    }
-    .project-link {
-      display: inline-flex; align-items: center; gap: 0.3rem;
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: var(--gold);
-      text-decoration: none;
-      letter-spacing: 0.04em;
-      transition: gap 0.2s;
-    }
-    .project-link:hover { gap: 0.5rem; }
-
-    /* ── PROJETS PERSOS ── */
-    #projets-persos { background: var(--cream); }
-    .projects-intro {
-      max-width: 700px;
-      margin: 2rem auto 3rem;
-      text-align: justify;
-      font-size: 1rem;
-      color: var(--mid);
-      line-height: 1.8;
-      font-weight: 300;
-    }
-    .projects-intro p { margin: 0; }
-    .project-card.personal .project-img { background: transparent; }
-    .project-card.personal .project-img::before { display: none; }
-    .project-card.personal .project-img-accent { display: none; }
-    .project-card.github-card {
-      text-decoration: none;
-      color: inherit;
-      background: var(--dark);
-      border-color: var(--dark);
-    }
-    .project-card.github-card:hover {
-      background: #1a1a1a;
-      transform: translateY(-6px);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-    }
-    .project-card.github-card .project-body { color: var(--cream); }
-    .project-card.github-card .project-title { color: var(--cream); }
-    .project-card.github-card .project-desc { color: rgba(255,255,255,0.6); }
-    .project-card.github-card .project-link { color: var(--gold); }
-    .project-card.github-card .tag { background: rgba(255,255,255,0.1); color: var(--gold); }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--dark);
-      padding: 1.2rem 4rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .footer-logo { flex: 1; display: flex; align-items: center; }
-    .footer-logo img { height: 36px; width: auto; display: block; }
-    .footer-copy { flex: 1; text-align: center; font-size: 0.78rem; color: rgba(255,255,255,0.3); }
-    .footer-links { flex: 1; display: flex; gap: 1.5rem; justify-content: flex-end; }
-    .footer-links a { font-size: 0.78rem; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
-    .footer-links a:hover { color: var(--gold); }
-
-    /* ── ANIMATIONS ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* ── SCROLL INDICATOR ── */
-    .scroll-indicator {
-      position: fixed;
-      top: 0; left: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--gold), var(--rust));
-      z-index: 200;
-      transition: width 0.1s;
-    }
-
-    /* ── TABLETTE ── */
-    @media (max-width: 1024px) {
-      nav { padding: 0 2rem; }
-      .nav-links { gap: 1.5rem; }
-      #hero { grid-template-columns: 1fr; min-height: auto; }
-      .hero-right { display: none; }
-      .hero-left { padding: 4rem 2rem; }
-      .parcours-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .competences-grid { grid-template-columns: 1fr 1fr; }
-      .projects-grid { grid-template-columns: 1fr 1fr; }
-      .container { padding: 0 2rem; }
-    }
-
-    /* ── MOBILE ── */
-    @media (max-width: 640px) {
-      :root { --nav-h: 60px; }
-
-      nav { padding: 0 1.2rem; }
-      .nav-links { display: none; }
-      .nav-logo img { height: 36px; }
-
-      /* Hero : le padding-top = hauteur nav, le contenu commence juste en dessous */
-      #hero { min-height: auto; padding-top: var(--nav-h); }
-      .hero-left { padding: 2.5rem 1.2rem 3rem; }
-      h1 { font-size: 2.1rem; }
-      .hero-sub { font-size: 0.95rem; max-width: 100%; }
-      .hero-actions { flex-direction: column; align-items: stretch; }
-      .btn-primary, .btn-outline { text-align: center; justify-content: center; }
-      .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
-      .stat-num { font-size: 1.8rem; }
-
-      section { padding: 4rem 0; }
-      .container { padding: 0 1.2rem; }
-      h2 { font-size: 1.7rem; }
-
-      .competences-grid { grid-template-columns: 1fr; }
-      .projects-grid { grid-template-columns: 1fr; }
-      .timeline { padding-left: 1.5rem; }
-      .timeline-marker { left: -2rem; width: 12px; height: 12px; }
-
-      footer { flex-direction: column; text-align: center; padding: 2rem 1.2rem; gap: 1rem; }
-      .footer-logo { justify-content: center; }
-      .footer-links { justify-content: center; flex-wrap: wrap; gap: 1rem; }
-
-      /* Pas de curseur custom sur écran tactile */
-      .cursor, .cursor-ring { display: none; }
-    }
-  </style>
 </head>
 <body>
 
@@ -618,7 +64,7 @@
       <li><a href="#parcours">Parcours</a></li>
       <li><a href="#ia">IA</a></li>
       <li><a href="#experience">Expérience</a></li>
-      <li><a href="#projets-persos" class="nav-cta" target="_blank" rel="noopener">GitHub →</a></li>
+      <li><a href="#projets-persos" class="nav-cta">Mes projets →</a></li>
     </ul>
   </nav>
 
@@ -631,7 +77,7 @@
         Expert PHP/Laravel & C# .NET — Architectures e-commerce haute charge, DevOps. Side projects: React, Next.js, Node.
       </p>
       <div class="hero-actions">
-        <a href="#projets-persos" class="btn-primary">Voir mes projets →</a>
+        <a href="#projets-persos" class="btn btn-primary">Voir mes projets →</a>
       </div>
       <div class="hero-stats">
         <div class="stat-item">
@@ -817,11 +263,25 @@
       </div>
       <div class="projects-grid">
         <a href="https://github.com/paulbuquet?tab=repositories" target="_blank" rel="noopener" class="project-card github-card reveal">
-          <div class="project-img" style="background:#24292e"><span>🐙</span></div>
+          <div class="project-img" style="background:#24292e">
+            <svg class="competence-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </div>
           <div class="project-body">
             <h3 class="project-title">Voir tous mes projets</h3>
             <p class="project-desc">Repositories publics, contributions open-source, expérimentations techniques</p>
             <span class="project-link">github.com/paulbuquet →</span>
+          </div>
+        </a>
+        <a href="https://mediemap.vercel.app" target="_blank" rel="noopener" class="project-card github-card reveal">
+          <div class="project-img" style="background:#24292e">
+            <img src="assets/logos/mediemap.png" alt="Mediémap" class="competence-logo" />
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">Mediémap</h3>
+            <p class="project-desc">Carte interactive des festivals médiévaux en France — Next.js, carte interactive, communauté</p>
+            <span class="project-link">mediemap.vercel.app →</span>
           </div>
         </a>
       </div>
@@ -835,7 +295,6 @@
     </div>
     <div class="footer-copy">© 2026 Paul Buquet · Senior Full-Stack Developer</div>
     <div class="footer-links">
-      <a href="mentions-legales.html">Mentions légales</a>
       <a href="https://github.com/paulbuquet?tab=repositories" target="_blank" rel="noopener">GitHub</a>
       <a href="https://www.linkedin.com/in/paul-buquet-45b3b1156" target="_blank" rel="noopener">LinkedIn</a>
       <a href="mailto:paulbuquet1997@gmail.com">Email</a>
